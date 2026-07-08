@@ -1,0 +1,19 @@
+model Token {
+  id        String    @id @default(uuid())
+  token     String    
+  type      TokenType
+  userId    String    @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime  @map("expires_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("tokens")
+}
+
+enum TokenType {
+  VERIFICATION
+  PASSWORD_RESET_CODE
+  PASSWORD_RESET_TOKEN
+  TWO_FACTOR
+}
