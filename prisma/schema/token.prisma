@@ -1,6 +1,6 @@
 model Token {
   id        String    @id @default(uuid())
-  token     String    
+  token     String
   type      TokenType
   userId    String    @map("user_id")
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)

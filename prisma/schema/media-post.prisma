@@ -1,0 +1,17 @@
+model PostMedia {
+    id String  @id @default(uuid())
+    path String
+    type MediaType
+
+    postId String @map("post_id")
+    post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime  @default(now()) @map("created_at")
+
+    @@map("post_media")
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}

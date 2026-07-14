@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.util';
 import { AccountModule } from './account/account.module';
 import { MailModule } from './mail/mail.module';
+import { PostModule } from './post/post.module';
+import { UserChatModule } from './user-chat/user-chat.module';
 
 @Module({
   imports: [
@@ -15,6 +17,6 @@ import { MailModule } from './mail/mail.module';
     }),
     PrismaModule, 
     UserModule, 
-    AuthModule, AccountModule, MailModule,],
+    AuthModule, AccountModule, MailModule, PostModule, UserChatModule,],
 })
 export class AppModule {}

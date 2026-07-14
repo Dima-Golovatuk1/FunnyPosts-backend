@@ -1,17 +1,18 @@
 model Account {
   id           String   @id @default(uuid())
   provider     Provider
-  providerId   String
+  providerId   String   @map("provider_id")
   type         String
-  accessToken  String?
-  refreshToken String?
-  expiresAt    Int
-  userId       String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  accessToken  String?  @map("access_token")
+  refreshToken String?  @map("refresh_token")
+  expiresAt    Int      @map("expires_at")
+  userId       String   @map("user_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerId])
+  @@map("accounts")
 }
 
 enum AccountType {
