@@ -1,24 +1,16 @@
 import {
     Body,
     Controller,
-    FileTypeValidator,
-    FileValidator,
     Get,
-    MaxFileSizeValidator,
     Param,
-    ParseFilePipe,
     Post,
     Query,
-    UploadedFile,
     UploadedFiles,
     UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from '../services/post.service';
 import { GetPostsDto } from '../dto/getPosts.dto';
-import {
-    FileFieldsInterceptor,
-    FileInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileValidationPipe } from '@/storage/pipes/file-validation.pipe';
 import {
@@ -111,5 +103,15 @@ export class PostController {
         @Body() dto: CreatePostDto,
     ) {
         return await this.postService.create(dto, userId, files);
+    }
+
+    // ------DELET POST--------
+    @Authorization()
+    @Post('delete/:id')
+    async delete(
+        @Param('id') postId: string,
+        @Authorized('id') userId: string,
+    ) {
+        return this.postService.deleteById(postId, userId)
     }
 }

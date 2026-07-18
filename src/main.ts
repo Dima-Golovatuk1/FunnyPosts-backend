@@ -5,13 +5,11 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { createClient } from 'redis';
 import * as cookieParser from 'cookie-parser';
-import * as session from 'express-session';
 
-import { RedisStore } from 'connect-redis';
 import { AppModule } from './app.module';
 
-import { ms, StringValue } from './libs/common/utils/ms.util';
-import { parserBoolean } from './libs/common/utils/parse-boolean.util';
+import { createSessionMiddleware } from './config/session.config';
+import { SessionIoAdapter } from './websocket/session.adapter';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -42,29 +40,13 @@ async function bootstrap() {
         SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup('api', app, documentFactory);
 
-    app.use(
-        sessionConfig({
-            secret: config.getOrThrow<string>('SESSION_SECRET'),
-            name: config.getOrThrow<string>('SESSION_NAME'),
-            resave: true,
-            saveUninitialized: false,
-            cookie: {
-                domain: config.getOrThrow<string>('SESSION_DOMAIN'),
-                maxAge: ms(config.getOrThrow<StringValue>('SESSION_MAX_AGE')),
-                httpOnly: parserBoolean(
-                    config.getOrThrow<string>('SESSION_HTTP_ONLY'),
-                ),
-                secure: parserBoolean(
-                    config.getOrThrow<string>('SESSION_SECURE'),
-                ),
-                sameSite: 'lax',
-            },
-            store: new RedisStore({
-                client: redisClient,
-                prefix: config.getOrThrow<string>('SESSION_FOLDER'),
-            }),
-        }),
-    );
+    const sessionMiddleware = createSessionMiddleware(
+        config,
+        redisClient
+    )
+
+    app.useWebSocketAdapter( new SessionIoAdapter(app, sessionMiddleware))
+    app.use(sessionMiddleware);
     app.enableCors({
         origin: config.getOrThrow<string>('ALLOWED_ORIGIN'),
         credential: true,

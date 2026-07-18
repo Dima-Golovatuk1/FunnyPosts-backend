@@ -12,6 +12,9 @@ model User {
   comments Comment[]
   likes    Like[]
 
+  chatMember ChatMember[]
+  message Message[]
+
   token Token[]
 
   isVerified         Boolean @default(false) @map("is_verified")

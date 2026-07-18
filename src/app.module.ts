@@ -10,13 +10,18 @@ import { PostModule } from './post/post.module';
 import { UserChatModule } from './user-chat/user-chat.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      ignoreEnvFile: !IS_DEV_ENV,
-      isGlobal: true
-    }),
-    PrismaModule, 
-    UserModule, 
-    AuthModule, AccountModule, MailModule, PostModule, UserChatModule,],
+    imports: [
+        ConfigModule.forRoot({
+            ignoreEnvFile: !IS_DEV_ENV,
+            isGlobal: true,
+        }),
+        PrismaModule,
+        UserModule,
+        AuthModule,
+        AccountModule,
+        MailModule,
+        PostModule,
+        UserChatModule,
+    ],
 })
 export class AppModule {}

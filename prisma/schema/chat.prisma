@@ -1,0 +1,50 @@
+model Chat {
+    id   String   @id @default(uuid())
+    type ChatType @default(PRIVATE)
+
+    members  ChatMember[]
+    messages Message[]
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("chats")
+}
+
+model ChatMember {
+    id String @id @default(uuid())
+
+    chatId String @map("chat_id")
+    chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+    userId String @map("user_id")
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    joinedAt DateTime @default(now()) @map("joined_at")
+
+    @@unique([chatId, userId])
+    @@map("chat_members")
+}
+
+model Message {
+    id String @id @default(uuid())
+
+    text String
+
+    chatId String @map("chat_id")
+    chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+    senderId String @map("sender_id")
+    sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([chatId])
+    @@map("messages")
+}
+
+enum ChatType {
+    PRIVATE
+    GROUP
+}

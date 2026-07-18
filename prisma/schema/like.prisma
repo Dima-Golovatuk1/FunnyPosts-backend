@@ -16,3 +16,8 @@ model Like {
     @@unique([userId, commentId])
     @@map("likes")
 }
+
+enum LikeType {
+    POST
+    COMMENT
+}

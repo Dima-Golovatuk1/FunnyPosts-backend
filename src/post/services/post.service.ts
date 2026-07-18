@@ -26,6 +26,15 @@ export class PostService {
                 skip: 1,
             }),
             orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        picture: true
+                    }
+                }
+            }
         });
 
         return {
@@ -123,5 +132,25 @@ export class PostService {
                 url: this.storageService.getPublicUrl('posts-media', m.path),
             })),
         };
+    }
+
+    public async deleteById(userId: string, postId: string){
+        const post = await this.prismaService.post.findFirst({
+            where: {
+                id: postId,
+                authorId: userId
+            }
+        })
+
+        if(!post){
+            throw new NotFoundException("Post not found")
+        }
+
+        return await this.prismaService.post.delete({
+            where: {
+                id: postId,
+                authorId: userId
+            }
+        })
     }
 }

@@ -50,7 +50,8 @@ export class CommentService{
 
         return await this.prismaService.comment.delete({
             where: {
-                id: commentId
+                id: commentId,
+                userId: userId
             }
         })
     }
