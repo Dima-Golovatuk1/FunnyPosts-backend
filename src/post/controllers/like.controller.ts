@@ -5,7 +5,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { LikeServise } from "../services/like.service";
 
 @ApiTags('Posts')
-@Controller(':postId/')
+@Controller('posts/:postId/')
 export class LikeController{
     constructor(private readonly likeServise: LikeServise){}
 

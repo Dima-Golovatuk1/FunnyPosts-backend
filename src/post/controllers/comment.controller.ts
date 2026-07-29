@@ -6,7 +6,7 @@ import { Authorization } from '@/auth/decorators/auth.decorator';
 import { Authorized } from '@/auth/decorators/authorized.decorator';
 
 @ApiTags('Posts')
-@Controller(':postId/comments')
+@Controller('posts/:postId/comments')
 export class CommentController {
     constructor(private readonly commentService: CommentService) {}
 
