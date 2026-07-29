@@ -20,4 +20,10 @@ export class LikeController{
         return this.likeServise.getNumLikes(postId)
     }
 
+    @Authorization()
+    @Get('isHasLike')
+    async isHasLike(@Param('postId') postId: string, @Authorized('id') userId: string){
+        return this.likeServise.isHasLike(userId, postId)
+    }
+
 }

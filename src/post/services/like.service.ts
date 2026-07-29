@@ -36,8 +36,8 @@ export class LikeServise {
 
         const data =
             type === LikeType.POST
-                ? { userId, postId: id, type }
-                : { userId, commentId: id, type };
+                ? { userId, postId: id }
+                : { userId, commentId: id };
         
         const like = await this.prismaService.like.findFirst({
             where,
@@ -70,5 +70,20 @@ export class LikeServise {
                 postId
             }
         })).length
+    }
+
+    public async isHasLike(userId: string, postId:string): Promise<boolean>{
+        const like = await this.prismaService.like.findFirst({
+            where: {
+                userId,
+                postId
+            },
+        });
+
+        if(like){
+            return true
+        }
+
+        else return false
     }
 }
