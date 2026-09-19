@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, IsString, MinLength, Validate } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString, Length, MinLength, Validate } from 'class-validator'
 import { IsPasswordsMatchingConstraint } from 'src/libs/common/decorators/is-passwords-matching-constraint.decorator'
 
 export class RegisterDto {
     @ApiProperty({})
     @IsString({message: 'name must be a string'})
     @IsNotEmpty({message: 'name can not be empty'})
+    @Length(2, 60)
     name: string
 
     @ApiProperty({})

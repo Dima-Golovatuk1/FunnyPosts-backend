@@ -1,98 +1,137 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> backend API for the <b>FunnyPosts</b> application, built with NestJS, Prisma, and PostgreSQL.
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+
+<p align="center">
+  <img src="https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS" />
+  <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/postgresql-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white" alt="Redis" />
+  <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+</p>
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+FunnyPosts backend repository. This API handles user authentication, session management, sending emails, and data persistence for the platform.
 
-## Project setup
+## 🛠 Prerequisites
 
-```bash
-$ yarn install
-```
+To run this project, you need the following tools installed:
+* **Node.js** (v18 or higher recommended)
+* **Docker & Docker Compose** (recommended for easy database setup)
+* **PostgreSQL & Redis** (only if you want to install them manually without Docker)
+* **Git** 
 
-## Compile and run the project
+## ⚙️ Environment Variables (`.env`) Setup
 
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
-
-## Run tests
+Before starting the app, you need to configure your environment variables. 
+Copy the `.env.example` file and rename it to `.env`:
 
 ```bash
-# unit tests
-$ yarn run test
+$ cp .env.example .env
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
 ```
 
-## Deployment
+### 1. Basic Configuration
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+* `PORT` — The port the server runs on (usually `3000`).
+* `DATABASE_URL` — Connection string for your PostgreSQL database.
+* `REDIS_URL` — Connection string for Redis session management.
+* `SESSION_SECRET` — A secure, random string (just type any long random text) used to encrypt session data.
+* `CORS_ORIGIN` — The URL of your frontend app (e.g., `http://localhost:5173`).
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 2. Google OAuth (For Google Login)
+
+To get these keys, you need a Google Cloud account:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/?utm_source=gemini).
+2. Create a new project.
+3. Go to **APIs & Services** > **Credentials**.
+4. Click **Create Credentials** > **OAuth client ID** (Choose "Web application").
+5. Copy the generated keys into your `.env` file:
+* `GOOGLE_CLIENT_ID` = Your generated Client ID.
+* `GOOGLE_CLIENT_SECRET` = Your generated Client Secret.
+* `GOOGLE_CALLBACK_URL` = e.g., `http://localhost:3000/api/auth/google/callback` (Make sure to add this exact URL in your Google Cloud Console "Authorized redirect URIs").
+
+
+
+### 3. Google reCAPTCHA
+
+1. Go to the [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin?utm_source=gemini).
+2. Register a new site (choose reCAPTCHA v2 or v3 depending on your frontend setup).
+3. Add `localhost` to the domains.
+4. Copy the **Secret Key** and paste it here:
+* `GOOGLE_RECAPTCHA_SECRET_KEY` = Your Secret Key.
+
+
+
+### 4. Email Setup (For sending emails via Gmail)
+
+If you are using a regular Gmail account to send emails, you cannot use your normal password. You need an "App Password":
+
+1. Go to your [Google Account Manage page](https://myaccount.google.com/).
+2. Go to the **Security** tab.
+3. Make sure **2-Step Verification** is turned ON.
+4. Use the search bar to find **App passwords**.
+5. Create a new app password (name it something like "FunnyPosts App").
+6. Google will give you a 16-character password.
+* `EMAIL_USER` = your.email@gmail.com
+* `EMAIL_PASS` = The 16-character app password (without spaces).
+
+
+
+![example foto](./static/md-img/image1.png)
+
+## 🚀 Project setup
+
+You can start the project using Docker (easier) or locally via your terminal.
+
+### Option 1: Docker (Recommended)
+
+This command will automatically download and start PostgreSQL and Redis containers, and run the backend.
+
+1. Make sure Docker Desktop is running.
+2. Run this command in your terminal:
 
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+$ docker-compose up --build
+
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+3. The API should now be running at `http://localhost:3000`.
 
-## Resources
+![example foto](./static/md-img/image2.png)
 
-Check out a few resources that may come in handy when working with NestJS:
+### Option 2: Local Terminal
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Requires PostgreSQL and Redis to be already installed and running locally on your computer.
 
-## Support
+1. **Install dependencies:**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+$ npm install
 
-## Stay in touch
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+2. **Generate Prisma client and run database migrations:**
 
-## License
+```bash
+$ npx prisma generate
+$ npx prisma migrate dev
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```
+
+3. **Start the application:**
+
+```bash
+# development mode
+$ npm run start
+
+# watch mode (auto-restarts on code changes)
+$ npm run start:dev
+
+```
